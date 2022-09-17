@@ -1,0 +1,40 @@
+version: '3.1'
+
+services:
+  srv:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    container_name: jpa-example-srv
+    ports:
+      - "8080:8080"
+      - "9990:9990"
+    volumes:
+      - serv-vol:/opt/jboss/wildfly
+    links:
+      - db
+    depends_on:
+      - db
+    networks:
+      - ejb
+
+  db:
+    image: postgres
+    restart: always
+    container_name: jpa-example-db
+    environment:
+      # if you edit this value, also you will need edit the password value in jndi.file
+      POSTGRES_PASSWORD: "qgOBzj1xViJMX7Uba3UC"
+    volumes:
+      - ./scripts/db.sql:/docker-entrypoint-initdb.d/db.sql # this line copy db script to create db
+      - db-vol:/var/lib/postgresql
+    networks:
+      - ejb
+
+networks:
+  ejb:
+
+volumes:
+  db-vol:
+  serv-vol:
