@@ -1,9 +1,0 @@
-.idea
-.vscode
-.classpath
-.project
-docker-compose.yml
-Dockerfile
-LICENSE
-README.md
-transactions-jpa-client
